@@ -229,6 +229,11 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
+    minitest-bisect (1.4.0)
+      minitest-server (~> 1.0)
+      path_expander (~> 1.0)
+    minitest-server (1.0.4)
+      minitest (~> 5.0)
     mocha (0.14.0)
       metaclass (~> 0.0.1)
     mono_logger (1.1.0)
@@ -251,6 +256,7 @@ GEM
     pg (0.19.0)
     pg (0.19.0-x64-mingw32)
     pg (0.19.0-x86-mingw32)
+    path_expander (1.0.0)
     pkg-config (1.1.7)
     psych (2.1.1)
     puma (3.6.0)
@@ -385,6 +391,7 @@ DEPENDENCIES
   jquery-rails
   kindlerb (= 0.1.1)
   listen (>= 3.0.5, < 3.2)
+  minitest-bisect
   mocha (~> 0.14)
   mysql2 (>= 0.4.4)
   nokogiri (>= 1.6.8)
