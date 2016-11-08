@@ -759,6 +759,7 @@ module ActionController
       end
 
       EMPTY_ARRAY = []
+      EMPTY_HASH  = {}
       def hash_filter(params, filter)
         filter = filter.with_indifferent_access
 
@@ -772,6 +773,9 @@ module ActionController
             array_of_permitted_scalars?(self[key]) do |val|
               params[key] = val
             end
+          elsif filter[key] == EMPTY_HASH
+            # Declaration { preferences: {} }.
+            params[key] = value.permit! if value.respond_to?(:permit!)
           elsif non_scalar?(value)
             # Declaration { user: :name } or { user: [:name, :age, { address: ... }] }.
             params[key] = each_element(value) do |element|

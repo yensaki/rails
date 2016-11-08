@@ -168,6 +168,33 @@ class ParametersPermitTest < ActiveSupport::TestCase
     end
   end
 
+  test "key to empty hash: arbitrary hashes are permitted" do
+    params = ActionController::Parameters.new(
+      username: "wadus",
+      preferences: {
+        scheme: "Marazul",
+        font: {
+          name: "Source Code Pro",
+          size: 12
+        },
+        tabstops: [4, 8, 12, 16],
+        injected: Object.new # not a permitted scalar
+      },
+      hacked: 1 # not a hash
+    )
+
+    permitted = params.permit(:username, preferences: {}, hacked: {})
+
+    assert_equal "wadus",           permitted[:username]
+    assert_equal "Marazul",         permitted[:preferences][:scheme]
+    assert_equal "Source Code Pro", permitted[:preferences][:font][:name]
+    assert_equal 12,                permitted[:preferences][:font][:size]
+    assert_equal [4, 8, 12, 16],    permitted[:preferences][:tabstops]
+
+    assert_filtered_out permitted, :hacked
+    assert_filtered_out permitted[:preferences], :injected
+  end
+
   test "fetch raises ParameterMissing exception" do
     e = assert_raises(ActionController::ParameterMissing) do
       @params.fetch :foo
